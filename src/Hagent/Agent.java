@@ -2,6 +2,7 @@ package src.Hagent;
 
 import java.util.Hashtable;
 
+//Version du prof
 public interface Agent extends java.io.Serializable {
     public void init(String name, Node origin);
 
