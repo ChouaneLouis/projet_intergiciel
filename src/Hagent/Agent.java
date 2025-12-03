@@ -1,3 +1,5 @@
+package src.Hagent;
+
 import java.util.Hashtable;
 
 public interface Agent extends java.io.Serializable {

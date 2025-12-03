@@ -1,3 +1,5 @@
+package src.Hagent;
+
 public class ExceptionRecord {
     private String name;
     private String callstack;

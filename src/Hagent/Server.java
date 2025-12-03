@@ -1,3 +1,5 @@
+package src.Hagent;
+
 public interface Server {
     public void run();
 
