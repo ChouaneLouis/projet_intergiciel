@@ -1,11 +1,13 @@
 package src.Hagent;
 
-public interface Server {
+public interface Server extends Runnable {
+    public void main();
+
     public void run();
 
-    public void join(...);
+    public void join(Object hagentSerialized);
 
     public Object getService(String serviceName);
 
-    public ... getServer(String serverName);
+    public Node[] getServers();
 }
