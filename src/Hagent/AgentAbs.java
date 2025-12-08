@@ -1,20 +1,41 @@
 package src.Hagent;
 
-public abstract class AgentAbs implements Agent, Serializible {
+import java.util.HashMap;
 
+public abstract class AgentAbs implements Agent {
+
+    private String name;
     private int state = 0;
+    private HashMap<String, Node> knownNode;
+    private execptionRecord = null;
 
-    public void init(String name, Node origin) {}
+    public void init(String name, Node origin) {
+        this.name = name;
+        this.knownNode = new HashMap<>();
+        this.knownNode.put("orgin", origin);
+        
+    }
 
-    public void setup(Hashtable<String, Object> ns) {}
+    public void setup(Server localServer) {
+        for (Node n : localServer.getServer()) {
 
-    public void run() {}
+        }
+    }
 
-    private abstract void runState(int state);
+    public void run() {
+        try {
+            runState(state);
+        }
+        catch (Exception e) {
 
-    private void move(Node target, int newState) {}
+        }
+    }
 
-    private void finish() {}
+    protected abstract void runState(int state);
+
+    protected void move(Node target, int newState) {}
+
+    protected void finish() {}
 
 
 }

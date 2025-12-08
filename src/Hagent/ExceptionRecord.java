@@ -1,11 +1,25 @@
 package src.Hagent;
 
 public class ExceptionRecord {
-    private String name;
-    private String callstack;
+    private Exception exception;
+    private String agentName;
+    private int state;
 
-    public ExceptionRecord(String n, String cs) {
-        this.name = n;
-        this.callstack = cs;
+    public ExceptionRecord(Exception exception, String agentName, int state) {
+        this.exception = exception;
+        this.agentName = agentName;
+        this.state = state;
+    }
+
+    public Exception getException() {
+        return exception;
+    }
+
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public int getState() {
+        return state;
     }
 }
