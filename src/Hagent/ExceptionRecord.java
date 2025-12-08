@@ -1,28 +1,25 @@
 package src.Hagent;
 
 public class ExceptionRecord {
-    private String name;
-    private StackTraceElement[] callstack;
+    private Exception exception;
+    private String agentName;
+    private int state;
 
-    public ExceptionRecord(String n, StackTraceElement[] cs) {
-        this.name = n;
-        this.callstack = cs;
+    public ExceptionRecord(Exception exception, String agentName, int state) {
+        this.exception = exception;
+        this.agentName = agentName;
+        this.state = state;
     }
 
-    public String getName() {
-        return name;
+    public Exception getException() {
+        return exception;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getAgentName() {
+        return agentName;
     }
 
-    public StackTraceElement[] getCallstack() {
-        return callstack;
+    public int getState() {
+        return state;
     }
-
-    public void setCallstack(StackTraceElement[] callstack) {
-        this.callstack = callstack;
-    }
-
 }
