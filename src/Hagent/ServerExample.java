@@ -4,16 +4,15 @@ import java.net.Socket;
 
 public class ServerExample extends ServerAbs {
 
-    @Override
-    public void main() {
-        // TODO Auto-generated method stub
+    public ServerExample(Socket newSock) {
+        this.s = newSock;
+        this.services.put("Test", new ServiceExample());
 
     }
 
     @Override
     protected ServerAbs newServer(Socket s) {
-        // TODO Auto-generated method stub
-        return null;
+        return new ServerExample(s);
     }
 
 }
