@@ -2,10 +2,12 @@ package src.Hagent;
 
 public class Node {
     private String name;
+    private String address;
     private int port;
 
-    public Node(String n, int p) {
+    public Node(String n, String a, int p) {
         this.name = n;
+        this.address = a;
         this.port = p;
     }
 
@@ -13,15 +15,18 @@ public class Node {
         return this.name;
     }
 
-    public void setName(String newName) {
-        this.name = newName;
+    public String getAddress() {
+        return this.address;
     }
 
     public int getPort() {
         return this.port;
     }
 
-    public void setPort(int newPort) {
-        this.port = newPort;
+    public boolean equals(Node other) {
+        return other != null 
+            && this.name.equals(other.name)
+            && this.address.equals(other.address)
+            && this.port == other.port;
     }
 }

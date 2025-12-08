@@ -1,4 +1,6 @@
-package src.Hagent;
+package test.TestHelloWorld;
+
+import src.Hagent.Service;
 
 public class ServiceExample implements Service {
 

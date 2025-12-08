@@ -13,7 +13,7 @@ public abstract class ServerAbs implements Server {
     protected HashMap<String, Service> services;
     private Node myNode;
 
-    Socket s;
+    protected Socket s;
 
     public void run() {
         try {
