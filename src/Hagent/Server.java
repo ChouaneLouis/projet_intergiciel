@@ -5,8 +5,6 @@ public interface Server extends Runnable {
 
     public void run();
 
-    public void join(Object hagentSerialized);
-
     public Object getService(String serviceName);
 
     public Node[] getServers();
