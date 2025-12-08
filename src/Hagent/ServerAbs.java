@@ -1,0 +1,87 @@
+package src.Hagent;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.HashMap;
+import java.util.NoSuchElementException;
+
+public abstract class ServerAbs implements Server {
+    private Node[] serversList;
+    private HashMap<String, Service> services;
+    private Node myNode;
+
+    Socket s;
+
+    public void run() {
+        try {
+            System.out.println("recieved new request");
+
+            InputStream inputIS = s.getInputStream();
+
+            // deserialize
+            ObjectInputStream ois = new ObjectInputStream(inputIS);
+            try {
+                Agent ag = (Agent) ois.readObject();
+
+                // Agent fait sa tâche
+                ag.setUp(this);
+                ag.run();
+
+            } catch (ClassNotFoundException e) {
+                System.err.println("Erreur ClassNotFound");
+                e.printStackTrace();
+            }
+
+            // Tout fermer
+            ois.close();
+            inputIS.close();
+            System.out.println("End of thread");
+            s.close();
+
+        } catch (IOException e) {
+            System.err.println("PB run() Server");
+            e.printStackTrace();
+        }
+    }
+
+    public Service getService(String serviceName) throws NoSuchElementException { // TODO, à mettre dans l'agent et le
+                                                                                  // renvoyer au départ ?
+        Service service = null;
+        if (services.containsKey(serviceName)) {
+            service = services.get(serviceName);
+        } else {
+            throw new NoSuchElementException();
+        }
+        return service;
+    }
+
+    public Node[] getServers() {
+        return this.serversList;
+    }
+
+    protected abstract ServerAbs newServer(Socket s); // retourne un nouvel objet
+
+    public void main(String args[]) { // static ?
+        try {
+            ServerSocket ss = new ServerSocket(this.myNode.getPort());
+            while (true) {
+                try {
+                    Socket s = ss.accept();
+                    Thread t = new Thread(newServer(s)); // Classe abstraite -> pas de Constructeur, comment faire ?
+                    t.start();
+
+                } catch (IOException e) {
+                    System.err.println(e);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("PB ServerSocket");
+            e.printStackTrace();
+        }
+    }
+
+}

@@ -1,6 +1,7 @@
 package src.Hagent;
 
 
+//Version du prof
 public interface Agent extends java.io.Serializable {
     public void init(String name, Node origin);
 
