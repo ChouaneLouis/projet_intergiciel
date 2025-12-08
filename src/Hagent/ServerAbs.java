@@ -3,7 +3,6 @@ package src.Hagent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -11,7 +10,7 @@ import java.util.NoSuchElementException;
 
 public abstract class ServerAbs implements Server {
     private Node[] serversList;
-    private HashMap<String, Service> services;
+    protected HashMap<String, Service> services;
     private Node myNode;
 
     Socket s;
@@ -28,7 +27,7 @@ public abstract class ServerAbs implements Server {
                 Agent ag = (Agent) ois.readObject();
 
                 // Agent fait sa tâche
-                ag.setUp(this);
+                ag.setup(this);
                 ag.run();
 
             } catch (ClassNotFoundException e) {
@@ -65,7 +64,7 @@ public abstract class ServerAbs implements Server {
 
     protected abstract ServerAbs newServer(Socket s); // retourne un nouvel objet
 
-    public void main(String args[]) { // static ?
+    public void main() { // static ?
         try {
             ServerSocket ss = new ServerSocket(this.myNode.getPort());
             while (true) {
