@@ -1,6 +1,6 @@
 package src.Hagent;
 
-public class ExceptionRecord {
+public class ExceptionRecord implements java.io.Serializable {
     private Exception exception;
     private String agentName;
     private int state;

@@ -3,15 +3,15 @@ package src.Hagent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.net.ServerSocket;
+// import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 public abstract class ServerAbs implements Server {
-    private Node[] serversList;
+    protected Node[] serversList;
     protected HashMap<String, Service> services;
-    private Node myNode;
+    protected static Node myNode;
 
     protected Socket s;
 
@@ -61,26 +61,35 @@ public abstract class ServerAbs implements Server {
     public Node[] getServers() {
         return this.serversList;
     }
+    /*
+     * Créer le ServerSocket et attend les connexions entrantes.
+    */
+    // public static void main(String[] args) {
+    //     System.out.println("Starting Server");
+    //     if (args.length != 3) {
+    //         System.err.println("Usage: java ServerAbs <name> <address> <port>");
+    //         System.exit(1);
+    //     }
+    //     try {
+    //         myNode = new Node(args[0], args[1], Integer.parseInt(args[2]));
+    //         ServerSocket ss = new ServerSocket(myNode.getPort());
+    //         while (true) {
+    //             try {
+    //                 Socket s = ss.accept();
+    //                 Thread t = new Thread(newServer(s)); // Classe abstraite -> pas de Constructeur, comment faire ?
+    //                 t.start();
 
-    protected abstract ServerAbs newServer(Socket s); // retourne un nouvel objet
-
-    public void main() { // static ?
-        try {
-            ServerSocket ss = new ServerSocket(this.myNode.getPort());
-            while (true) {
-                try {
-                    Socket s = ss.accept();
-                    Thread t = new Thread(newServer(s)); // Classe abstraite -> pas de Constructeur, comment faire ?
-                    t.start();
-
-                } catch (IOException e) {
-                    System.err.println(e);
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("PB ServerSocket");
-            e.printStackTrace();
-        }
-    }
+    //             } catch (IOException e) {
+    //                 System.err.println(e);
+    //             }
+    //         }
+    //     } catch (IOException e) {
+    //         System.err.println("PB ServerSocket");
+    //         e.printStackTrace();
+    //     } catch (NumberFormatException e) {
+    //         System.err.println("Port must be an integer");
+    //         e.printStackTrace();
+    //     }
+    // }
 
 }

@@ -8,4 +8,8 @@ public interface Agent extends java.io.Serializable {
     public void setup(Server localServer);
 
     public void run();
+
+    public void addKnownNode(Node node);
+
+    public String getName();
 }

@@ -1,21 +1,40 @@
 package test.TestHelloWorld;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 import src.Hagent.*;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Starting HelloWorld Test");
 
-        // TODO Creation du thread pour récuperer l'agent une fois fini
+        Node servNode = new Node("Server1", "localhost", 8081);
+        Node myNode = new Node("origin", "localhost", 8080);
 
-        // TODO Creation d'un serveur pour recevoir l'agent (sur un thread séparé)
+        try {
+            ServerSocket ss = new ServerSocket(myNode.getPort());
 
-        AgentExemple agent = new AgentExemple();
-        agent.addKnownNode(new Node("Server1", "localhost", 8081));
-        agent.init("AgentHelloWorld", new Node("origin", "localhost", 8080));
-        agent.run();
+            AgentExemple agent = new AgentExemple();
+            agent.init("AgentHelloWorld", myNode);
+            agent.addKnownNode(servNode);
+            agent.run();
 
-        // TODO Programme cabale de récupérer l'agent apres son finish
+            Socket s = ss.accept();
+            InputStream inputIS = s.getInputStream();
+            ObjectInputStream ois = new ObjectInputStream(inputIS);
+            Agent ag = (Agent) ois.readObject();
+            System.out.println("Agent " + ag.getName() + " received at destination:");
+        } catch (IOException e) {
+            System.err.println("PB ServerSocket");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.err.println("Erreur ClassNotFound");
+            e.printStackTrace();
+        }
 
         System.out.println("HelloWorld Test Finished");
     }

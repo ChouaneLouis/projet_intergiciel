@@ -17,8 +17,7 @@ public abstract class AgentAbs implements Agent {
     public void init(String name, Node origin) {
         this.name = name;
         this.knownNode = new HashMap<>();
-        this.knownNode.put("orgin", origin);
-        
+        this.knownNode.put("origin", origin);
     }
 
     public void setup(Server localServer) {
@@ -41,6 +40,7 @@ public abstract class AgentAbs implements Agent {
     protected abstract void runState(int state);
 
     protected void move(Node target, int newState) {
+        localServer = null;
         state = newState;
         try {
             Socket socket = new Socket(target.getAddress(), target.getPort());
@@ -79,4 +79,7 @@ public abstract class AgentAbs implements Agent {
         this.knownNode.put(node.getName(), node);
     }
 
+    public String getName() {
+        return this.name;
+    }
 }
