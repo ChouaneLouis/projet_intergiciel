@@ -5,28 +5,34 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class HRecordImpl extends UnicastRemoteObject implements HRecord {
     private String name;
-    private String numero;
+    private String number;
     private String adress;
 
     public HRecordImpl(String n, String num, String a) throws RemoteException {
         this.name = n;
-        this.numero = num;
+        this.number = num;
         this.adress = a;
     }
 
     @Override
-    public String getAdress() {
+    public String getAdress() throws RemoteException {
         return this.adress;
     }
 
     @Override
-    public String getName() {
+    public String getName() throws RemoteException {
         return this.name;
     }
 
     @Override
-    public String getNumero() {
-        return this.numero;
+    public String getNumber() throws RemoteException {
+        return this.number;
+    }
+
+    @Override
+    public void printInfo() throws RemoteException {
+        System.out.println("Name : " + this.name + "\nNumber : " + this.number + "\nAdress : " + this.adress + "\n");
+
     }
 
 }
