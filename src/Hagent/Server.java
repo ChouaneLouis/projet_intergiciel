@@ -1,4 +1,4 @@
-package src.Hagent;
+package Hagent;
 
 public interface Server extends Runnable {
 

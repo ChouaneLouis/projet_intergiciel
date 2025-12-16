@@ -1,4 +1,4 @@
-package src.Hagent;
+package Hagent;
 
 public class Node implements java.io.Serializable {
     private String name;

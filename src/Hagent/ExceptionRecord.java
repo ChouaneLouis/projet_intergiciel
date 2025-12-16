@@ -1,4 +1,4 @@
-package src.Hagent;
+package Hagent;
 
 public class ExceptionRecord implements java.io.Serializable {
     private Exception exception;

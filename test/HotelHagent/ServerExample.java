@@ -1,18 +1,18 @@
-package test.TestHelloWorld;
+package HotelHagent;
 
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.io.IOException;
 import java.util.HashMap;
 
-import src.Hagent.*;
+import Hagent.*;
 
 public class ServerExample extends ServerAbs {
 
     public ServerExample(Socket newSock) {
         this.s = newSock;
         this.services = new HashMap<String, Service>();
-        this.services.put("Test", new ServiceExample());
+        this.services.put("Test", new InfoServiceImpl());
         this.serversList = new Node[0];
     }
 

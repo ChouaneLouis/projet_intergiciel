@@ -1,4 +1,4 @@
-package src.Hagent;
+package Hagent;
 
 public class ConflictingNodesException extends RuntimeException {
     public ConflictingNodesException() {

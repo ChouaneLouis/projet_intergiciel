@@ -1,4 +1,4 @@
-package src.Hagent;
+package Hagent;
 
 
 //Version du prof
@@ -12,4 +12,6 @@ public interface Agent extends java.io.Serializable {
     public void addKnownNode(Node node);
 
     public String getName();
+
+    public ExceptionRecord getExceptionRecord();
 }

@@ -1,4 +1,4 @@
-package src.Hagent;
+package Hagent;
 
 public interface Service { // Doit être héritée par toutes les interfaces de services // implantée par tous
                            // les services ?

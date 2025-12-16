@@ -1,4 +1,4 @@
-package src.Hagent;
+package Hagent;
 
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -64,7 +64,7 @@ public abstract class AgentAbs implements Agent {
         move(getKnownNode("origin"), -1);
     }
 
-    protected ExceptionRecord getExceptionRecord() {
+    public ExceptionRecord getExceptionRecord() {
         return execptionRecord;
     }
 

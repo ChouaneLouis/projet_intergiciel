@@ -1,6 +1,6 @@
-package test.TestHelloWorld;
+package HelloWorld;
 
-import src.Hagent.AgentAbs;
+import Hagent.AgentAbs;
 
 public class AgentExemple extends AgentAbs {
 
