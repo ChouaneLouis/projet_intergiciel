@@ -2,22 +2,38 @@ package Hagent;
 
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import java.util.jar.JarFile;
 
 public abstract class AgentAbs implements Agent {
 
     private String name;
     private int state = 0;
     private HashMap<String, Node> knownNode;
-    private ExceptionRecord execptionRecord = null;
+    private ExceptionRecord execptionRecord;
+    private byte[] jarBytes;
 
     protected Server localServer;
+
+    protected abstract String getAgentJarPath();
 
     public void init(String name, Node origin) {
         this.name = name;
         this.knownNode = new HashMap<>();
         this.knownNode.put("origin", origin);
+        try  {
+            this.jarBytes = readJarFromPath(getAgentJarPath());
+        } catch (IOException e) {
+            new ExceptionRecord(e, this.name, -1);
+        }
     }
 
     public void setup(Server localServer) {
@@ -44,11 +60,17 @@ public abstract class AgentAbs implements Agent {
         state = newState;
         try {
             Socket socket = new Socket(target.getAddress(), target.getPort());
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 
-            oos.writeObject(this);
-            oos.flush();
-            oos.close();
+            dos.writeInt(jarBytes.length);
+            dos.write(jarBytes);
+
+            byte[] stateBytes = serializeAgent(this);
+            dos.writeInt(stateBytes.length);
+            dos.write(stateBytes);
+
+            dos.flush();
+            dos.close();
 
             socket.close();
         }
@@ -82,4 +104,25 @@ public abstract class AgentAbs implements Agent {
     public String getName() {
         return this.name;
     }
+
+    public static byte[] readJarFromPath(String jarPath) throws IOException {
+        Path path = Paths.get(jarPath);
+
+        if (!Files.exists(path)) {
+            throw new FileNotFoundException("Agent JAR not found: " + jarPath);
+        }
+
+        return Files.readAllBytes(path);
+    }
+
+    public static byte[] serializeAgent(Agent agent) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+
+        oos.writeObject(agent);
+        oos.flush();
+
+        return bos.toByteArray();
+    }
+
 }

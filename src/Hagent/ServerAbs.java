@@ -1,5 +1,7 @@
 package Hagent;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -19,25 +21,26 @@ public abstract class ServerAbs implements Server {
         try {
             System.out.println("recieved new request");
 
-            InputStream inputIS = s.getInputStream();
+            DataInputStream dis = new DataInputStream(s.getInputStream());
 
-            // deserialize
-            ObjectInputStream ois = new ObjectInputStream(inputIS);
+            byte[] jarBytes = receiveJar(dis);
+            byte[] stateBytes = receiveState(dis);
+
+            ClassLoader parent = ClassLoader.getSystemClassLoader();
+            AgentClassLoader agentClassLoader = new AgentClassLoader(parent, jarBytes);
+
+            ObjectInputStream ois = new AgentObjectInputStream(new ByteArrayInputStream(stateBytes), agentClassLoader);
+
             try {
-                Agent ag = (Agent) ois.readObject();
-
-                // Agent fait sa tâche
-                ag.setup(this);
-                ag.run();
-
+                Agent agent = (Agent) ois.readObject();
+                agent.setup(this);
+                agent.run();
             } catch (ClassNotFoundException e) {
-                System.err.println("Erreur ClassNotFound");
+                System.err.println("Class not found");
                 e.printStackTrace();
             }
 
-            // Tout fermer
-            ois.close();
-            inputIS.close();
+            dis.close();
             System.out.println("End of thread");
             s.close();
 
@@ -47,8 +50,7 @@ public abstract class ServerAbs implements Server {
         }
     }
 
-    public Service getService(String serviceName) throws NoSuchElementException { // TODO, à mettre dans l'agent et le
-                                                                                  // renvoyer au départ ?
+    public Service getService(String serviceName) throws NoSuchElementException {
         Service service = null;
         if (services.containsKey(serviceName)) {
             service = services.get(serviceName);
@@ -61,6 +63,28 @@ public abstract class ServerAbs implements Server {
     public Node[] getServers() {
         return this.serversList;
     }
+
+    public static byte[] receiveJar(DataInputStream dis) throws IOException {
+
+        int jarSize = dis.readInt();
+        if (jarSize <= 0) {
+            throw new IOException("Invalid JAR size: " + jarSize);
+        }
+
+        return dis.readNBytes(jarSize);
+    }
+
+    public static byte[] receiveState(DataInputStream dis) throws IOException {
+
+        int stateSize = dis.readInt();
+        if (stateSize <= 0) {
+            throw new IOException("Invalid state size: " + stateSize);
+        }
+
+        return dis.readNBytes(stateSize);
+    }
+
+
     /*
      * Créer le ServerSocket et attend les connexions entrantes.
     */
