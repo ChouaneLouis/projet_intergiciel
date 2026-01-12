@@ -1,6 +1,5 @@
 package HelloWorldClassLoader;
-
-import HagentClassLoader.Service;
+import HagentClassLoader.Commun.*;
 
 public class ServiceExample implements Service {
 

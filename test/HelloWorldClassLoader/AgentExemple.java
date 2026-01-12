@@ -1,6 +1,6 @@
 package HelloWorldClassLoader;
-
-import HagentClassLoader.AgentAbs;
+import HagentClassLoader.Client.*;
+import HagentClassLoader.Commun.*;
 
 public class AgentExemple extends AgentAbs {
 

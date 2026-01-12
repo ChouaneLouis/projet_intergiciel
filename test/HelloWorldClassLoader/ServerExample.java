@@ -1,11 +1,11 @@
 package HelloWorldClassLoader;
+import HagentClassLoader.Server.*;
+import HagentClassLoader.Commun.*;
 
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.io.IOException;
 import java.util.HashMap;
-
-import HagentClassLoader.*;
 
 public class ServerExample extends ServerAbs {
 

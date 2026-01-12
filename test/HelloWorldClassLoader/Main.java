@@ -1,4 +1,5 @@
 package HelloWorldClassLoader;
+import HagentClassLoader.Commun.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -10,7 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
 
-import HagentClassLoader.*;
+import HagentClassLoader.Client.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,6 +28,10 @@ public class Main {
             ServerSocket ss = new ServerSocket(myNode.getPort());
 
             AgentExemple agent = new AgentExemple();
+            String[] dependancies = {
+                "../../src/HagentClassLoader/Client/AgentAbs.class",
+                "../../src/HagentClassLoader/Client/ConflictingNodeException.class",
+                "./AgentExample.class"};
             agent.init("AgentHelloWorld", myNode);
             agent.addKnownNode(servNode);
             agent.run();
