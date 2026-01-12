@@ -25,7 +25,7 @@ public class Client {
         try {
             // Getting stubs
             NamesServer ns = (NamesServer) Naming
-                    .lookup("//" + InetAddress.getLocalHost().getHostName() + ":" + 1099 + "/namesserver");
+                    .lookup("//" + args[0] + ":" + 1099 + "/namesserver");
 
             list = ns.getNames();
             System.out.println("Successfully consulted names server !\nNames fetched : " + list.toString());
@@ -39,7 +39,7 @@ public class Client {
         try {
             // Get stub
             InfoServer is = (InfoServer) Naming
-                    .lookup("//" + InetAddress.getLocalHost().getHostName() + ":" + 2000 + "/infoserver");
+                    .lookup("//" + args[0] + ":" + 2000 + "/infoserver");
 
             for (String string : list) {
 
