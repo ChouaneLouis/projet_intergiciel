@@ -1,4 +1,5 @@
 package HagentClassLoader.Server;
+import HagentClassLoader.Commun.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

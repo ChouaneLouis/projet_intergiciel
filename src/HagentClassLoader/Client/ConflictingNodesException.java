@@ -1,4 +1,5 @@
 package HagentClassLoader.Client;
+import HagentClassLoader.Commun.*;
 
 public class ConflictingNodesException extends RuntimeException {
     public ConflictingNodesException() {

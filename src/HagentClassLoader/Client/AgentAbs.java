@@ -1,4 +1,5 @@
 package HagentClassLoader.Client;
+import HagentClassLoader.Commun.*;
 
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -12,6 +13,10 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.File;
 
 public abstract class AgentAbs implements Agent {
 
@@ -30,23 +35,27 @@ public abstract class AgentAbs implements Agent {
         this.classBytesByName = getClassBytes(dependanciesPaths);
     }
 
-    protected Map<String, byte[]> getClassBytes(String... dependancies) {
-        Map<String, byte[]> map = new HashMap<>();
+    protected Map<String, byte[]> getClassBytes(String... dependencies) {
+    Map<String, byte[]> map = new HashMap<>();
 
-        for (String string : dependancies) {
+    for (String pathStr : dependencies) {
+        try {
+            Path classFile = Paths.get(pathStr).toAbsolutePath().normalize();
+            byte[] classBytes = Files.readAllBytes(classFile);
 
-            try {
-                Path classFile = Paths.get(string);
-                byte[] classBytes = Files.readAllBytes(classFile);
-                map.put(string, classBytes);
-            } catch (IOException e) {
-                System.out.println("Erreur dans la récupération des dépendances");
-                map = null;
-                break;
-            }
+            String className = classFile.toString()
+                    .replace(File.separatorChar, '.')
+                    .replaceAll("\\.class$", "");
+
+            map.put(className, classBytes);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Erreur chargement dépendance " + pathStr, e);
         }
-        return map;
     }
+    return map;
+}
+
 
     public void setup(Server localServer) {
         for (Node n : localServer.getServers()) {

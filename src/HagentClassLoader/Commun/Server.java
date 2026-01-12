@@ -1,4 +1,4 @@
-package HagentClassLoader.Server;
+package HagentClassLoader.Commun;
 
 public interface Server extends Runnable {
 

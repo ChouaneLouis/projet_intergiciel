@@ -1,4 +1,4 @@
-package HagentClassLoader.Client;
+package HagentClassLoader.Commun;
 
 //Version du prof
 public interface Agent extends java.io.Serializable {
