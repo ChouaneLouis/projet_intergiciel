@@ -17,7 +17,7 @@ public abstract class AgentAbs implements Agent {
 
     private String name;
     private int state = 0;
-    private HashMap<String, Node> knownNode;
+    private Map<String, Node> knownNode;
     private ExceptionRecord execptionRecord = null;
     private Map<String, byte[]> classBytesByName;;
 
