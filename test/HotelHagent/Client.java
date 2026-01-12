@@ -1,5 +1,6 @@
 package HotelHagent;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -43,8 +44,17 @@ public class Client {
 
             Socket s = ss.accept();
             InputStream inputIS = s.getInputStream();
+
+            DataInputStream dis = new DataInputStream(inputIS);
+
+            int jarSize = dis.readInt();
+            dis.readNBytes(jarSize);
+            int stateSize = dis.readInt();
+
+
             ObjectInputStream ois = new ObjectInputStream(inputIS);
             Agent ag = (Agent) ois.readObject();
+
             System.out.println("Agent " + ag.getName() + " received at destination:");
             if (ag.getExceptionRecord() != null) {
                 System.out.println("Agent Exception Record:");

@@ -20,7 +20,7 @@ public class AgentExemple extends AgentAbs {
                 break;
             case 1:
                 System.out.println("State 1: Je suis chez le serveur, je dis Hello World");
-                InfoService service = (InfoServiceImpl) localServer.getService("Test");
+                InfoService service = (InfoService) localServer.getService("Test");
                 
                 for (String name : dataName) {
                     HRecord record = service.getDataFromName(name);
@@ -31,4 +31,10 @@ public class AgentExemple extends AgentAbs {
                 break;
         }
     }
+
+    @Override
+    protected String getAgentJarPath() {
+        return "bin/test/HotelHagent/AgentExemple.jar";
+    }
+
 }
