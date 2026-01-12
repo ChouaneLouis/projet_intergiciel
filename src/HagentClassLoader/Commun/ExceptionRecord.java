@@ -1,4 +1,4 @@
-package HagentClassLoader;
+package HagentClassLoader.Commun;
 
 public class ExceptionRecord implements java.io.Serializable {
     private Exception exception;

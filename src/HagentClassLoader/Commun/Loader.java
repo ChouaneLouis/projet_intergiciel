@@ -1,4 +1,4 @@
-package HagentClassLoader;
+package HagentClassLoader.Commun;
 
 import java.util.*;
 

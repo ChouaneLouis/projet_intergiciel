@@ -1,4 +1,4 @@
-package HagentClassLoader;
+package HagentClassLoader.Client;
 
 import java.net.Socket;
 import java.net.UnknownHostException;

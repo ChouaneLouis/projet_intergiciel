@@ -1,4 +1,4 @@
-package HagentClassLoader;
+package HagentClassLoader.Commun;
 
 public class Node implements java.io.Serializable {
     private String name;
