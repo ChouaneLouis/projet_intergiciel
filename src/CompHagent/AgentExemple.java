@@ -1,7 +1,6 @@
 package CompHagent;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterOutputStream;
 
@@ -9,7 +8,7 @@ import Hagent.Client.*;
 
 public class AgentExemple extends AgentAbs {
 
-    private List<byte[]> fileData = new java.util.ArrayList<>();
+    private byte[] fileData = new byte[0];
     public int originalSize;
     private int itnb;
 
@@ -28,22 +27,28 @@ public class AgentExemple extends AgentAbs {
                 System.out.println("State 1: Je suis chez le serveur, je dis récupere le fichier");
                 ServiceExample service = (ServiceExample) localServer.getService("FileReader");
                 try {
+                    ByteArrayOutputStream allFilesStream = new ByteArrayOutputStream();
+
                     for (int i = 0; i < itnb; i++) {
                         byte[] data = service.getFile().readAllBytes();
-                        originalSize = data.length;
-                        fileData.add(compress(data));
+                        allFilesStream.write(data);
                     }
+
+                    byte[] allData = allFilesStream.toByteArray();
+                    originalSize = allData.length;
+
+                    fileData = compress(allData);
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                System.out.println("compression de : " + ((1.0 - (double)fileData.get(0).length / (double)originalSize) * 100) + "%");
                 finish();
                 break;
         }
     }
 
     public byte[] getFileData() throws IOException {
-        return decompress(fileData.get(0));
+        return decompress(fileData);
     }
 
     @Override

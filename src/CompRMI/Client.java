@@ -7,11 +7,11 @@ import java.util.ArrayList;
 public class Client {
 
     public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Usage : java TestRMI.Client <names_server_ip> <info_server_ip> [<iterations_nb>]");
+        if (args.length != 1) {
+            System.out.println("Usage : java TestRMI.Client <data_server_ip>");
             return;
         }
-        int[] iterations_nb = {1, 1, 1, 10, 20, 30, 40, 50, 75, 100};
+        int[] iterations_nb = {1, 1, 1, 1, 10, 20, 30, 40, 50, 75, 100};
 
 
         try {
