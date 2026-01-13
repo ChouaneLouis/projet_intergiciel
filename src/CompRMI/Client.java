@@ -7,22 +7,12 @@ import java.util.ArrayList;
 public class Client {
 
     public static void main(String[] args) {
-        if (args.length < 2 || args.length > 3) {
+        if (args.length != 2) {
             System.out.println("Usage : java TestRMI.Client <names_server_ip> <info_server_ip> [<iterations_nb>]");
             return;
         }
-        int iterations_nb = 100;
-        if (args.length == 3) {
-            try {
-                iterations_nb = Integer.parseInt(args[2]);
-            } catch (NumberFormatException e) {
-                System.out.println("Third argument must be an integer corresponding to the number of iterations");
-                return;
-            }
-        }
+        int[] iterations_nb = {1, 1, 1, 10, 20, 30, 40, 50, 75, 100};
 
-        System.out.println("Begining test speed for RMI with " + iterations_nb + " iterations\n");
-        long startTime = System.currentTimeMillis();
 
         try {
             // Getting stub for first server
@@ -31,17 +21,22 @@ public class Client {
             
 
             List<byte[]> list = new ArrayList<>();
-            for (int i = 0; i < iterations_nb; i++) {
+            for (int itnp : iterations_nb) {
+                System.out.println("Begining test speed for RMI with " + itnp + " iterations\n");
+                long startTime = System.currentTimeMillis();
                 // Geting name list from names server
-                list.add(ns.getData());
+                for (int i = 0; i < itnp; i++) {
+                    list.add(ns.getData());
+                }
+
+                System.out.println("Test finished in " + (System.currentTimeMillis() - startTime) + " ms\n");
 
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            return;
         }
-
-        System.out.println("Test finished in " + (System.currentTimeMillis() - startTime) + " ms\n");
     }
 
 }

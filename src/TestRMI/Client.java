@@ -8,6 +8,7 @@ import java.util.List;
 public class Client {
 
     public static void main(String[] args) {
+        long startTime = 0;
         if (args.length < 2 || args.length > 3) {
             System.out.println("Usage : java TestRMI.Client <names_server_ip> <info_server_ip> [<iterations_nb>]");
             return;
@@ -22,9 +23,6 @@ public class Client {
             }
         }
 
-        System.out.println("Begining test speed for RMI with " + iterations_nb + " iterations\n");
-        long startTime = System.currentTimeMillis();
-
         try {
             // Getting stub for first server
             NamesServer ns = (NamesServer) Naming
@@ -34,6 +32,9 @@ public class Client {
             InfoServer is = (InfoServer) Naming
                     .lookup("//" + args[1] + ":" + 2000 + "/infoserver");
 
+            System.out.println("Begining test speed for RMI with " + iterations_nb + " iterations\n");
+            startTime = System.currentTimeMillis();
+            
             for (int i = 0; i < iterations_nb; i++) {
                 // Geting name list from names server
                 List<String> list = ns.getNames();

@@ -1,5 +1,6 @@
 package CompRMI;
 
+import java.io.FileInputStream;
 import java.net.InetAddress;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -11,7 +12,13 @@ public class ServerExempleImpl extends UnicastRemoteObject implements ServerExem
     private byte[] data;
 
     public ServerExempleImpl() throws RemoteException {
-        this.data = new byte[] { 1, 2, 3, 4, 5 };
+        try {
+            FileInputStream fis = new FileInputStream("CompRMI/exemple.txt");
+            this.data = fis.readAllBytes();
+            fis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
