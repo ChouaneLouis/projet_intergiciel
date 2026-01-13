@@ -11,24 +11,31 @@ import java.net.Socket;
 public class Main {
     public static void main(String[] args) {
         ServerSocket ss = null;
-        if (args.length != 4) {
-            System.err.println("Usage: Main <homeAddress> <homePort> <destAddress> <destPort>");
+        long startTime = 0;
+        if (args.length < 4 || args.length > 5) {
+            System.err.println("Usage: Main <homeAddress> <homePort> <destAddress> <destPort> [<iterations_nb>]");
             return;
         }
         try {
             Node home = new Node("origin", args[0], Integer.parseInt(args[1]));
             Node dest = new Node("Server1", args[2], Integer.parseInt(args[3]));
+            int iterations_nb = 100;
+            if (args.length == 5) {
+                iterations_nb = Integer.parseInt(args[4]);
+            }
 
             ss = new ServerSocket(home.getPort());
 
-            System.out.println("Starting Compression Test");
+            System.out.println("Begining test speed for hagent with " + iterations_nb + " iterations\n");
+            startTime = System.currentTimeMillis();
 
-            AgentExemple agent = new AgentExemple();
+            AgentExemple agent = new AgentExemple(iterations_nb);
             agent.init("AgentHelloWorld", home);
             agent.addKnownNode(dest);
             agent.run();
         } catch (NumberFormatException e) {
-            System.err.println("Port numbers must be integers.");
+            System.err.println("Port and iterations numbers must be integers.");
+            return;
         } catch (Exception e) {
             System.err.println("Error initializing or running the agent:");
             e.printStackTrace();
@@ -65,6 +72,6 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.out.println("HelloWorld Test Finished");
+        System.out.println("Test finished in " + (System.currentTimeMillis() - startTime) + " ms\n");
     }
 }
