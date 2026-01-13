@@ -1,9 +1,9 @@
-package Hagent;
+package Hagent.Commun;
 
 
 //Version du prof
 public interface Agent extends java.io.Serializable {
-    public void init(String name, Node origin);
+    public void init(String name, Node origin) throws java.io.IOException;
 
     public void setup(Server localServer);
 

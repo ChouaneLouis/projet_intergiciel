@@ -1,11 +1,12 @@
-package Hagent;
+package Hagent.Serveur;
+
+import Hagent.Commun.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
-// import java.net.ServerSocket;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -16,6 +17,35 @@ public abstract class ServerAbs implements Server {
     protected static Node myNode;
 
     protected Socket s;
+
+    /* à définire par l'utilisateur avec simplement un constructeur */
+    public abstract ServerAbs newServer(Socket s);
+
+    public ServerAbs(Socket s) {
+        this.s = s;
+    }
+
+    public ServerAbs(Node myNode) {
+        try {
+            ServerSocket ss = new ServerSocket(myNode.getPort());
+            while (true) {
+                try {
+                    Socket s = ss.accept();
+                    Thread t = new Thread(newServer(s));
+                    t.start();
+
+                } catch (IOException e) {
+                    System.err.println(e);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("PB ServerSocket");
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.err.println("Port must be an integer");
+            e.printStackTrace();
+        }
+    }
 
     public void run() {
         try {
@@ -83,37 +113,5 @@ public abstract class ServerAbs implements Server {
 
         return dis.readNBytes(stateSize);
     }
-
-
-    /*
-     * Créer le ServerSocket et attend les connexions entrantes.
-    */
-    // public static void main(String[] args) {
-    //     System.out.println("Starting Server");
-    //     if (args.length != 3) {
-    //         System.err.println("Usage: java ServerAbs <name> <address> <port>");
-    //         System.exit(1);
-    //     }
-    //     try {
-    //         myNode = new Node(args[0], args[1], Integer.parseInt(args[2]));
-    //         ServerSocket ss = new ServerSocket(myNode.getPort());
-    //         while (true) {
-    //             try {
-    //                 Socket s = ss.accept();
-    //                 Thread t = new Thread(newServer(s)); // Classe abstraite -> pas de Constructeur, comment faire ?
-    //                 t.start();
-
-    //             } catch (IOException e) {
-    //                 System.err.println(e);
-    //             }
-    //         }
-    //     } catch (IOException e) {
-    //         System.err.println("PB ServerSocket");
-    //         e.printStackTrace();
-    //     } catch (NumberFormatException e) {
-    //         System.err.println("Port must be an integer");
-    //         e.printStackTrace();
-    //     }
-    // }
 
 }

@@ -1,4 +1,4 @@
-package Hagent;
+package Hagent.Serveur;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

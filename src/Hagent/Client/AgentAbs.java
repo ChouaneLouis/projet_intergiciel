@@ -1,4 +1,6 @@
-package Hagent;
+package Hagent.Client;
+
+import Hagent.Commun.*;
 
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -11,7 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
-import java.util.jar.JarFile;
 
 public abstract class AgentAbs implements Agent {
 
@@ -25,17 +26,17 @@ public abstract class AgentAbs implements Agent {
 
     protected abstract String getAgentJarPath();
 
-    public void init(String name, Node origin) {
+    protected abstract void runState(int state);
+
+    @Override
+    public void init(String name, Node origin) throws IOException {
         this.name = name;
         this.knownNode = new HashMap<>();
         this.knownNode.put("origin", origin);
-        try  {
-            this.jarBytes = readJarFromPath(getAgentJarPath());
-        } catch (IOException e) {
-            new ExceptionRecord(e, this.name, -1);
-        }
+        this.jarBytes = readJarFromPath(getAgentJarPath());
     }
 
+    @Override
     public void setup(Server localServer) {
         for (Node n : localServer.getServers()) {
             addKnownNode(n);
@@ -43,17 +44,16 @@ public abstract class AgentAbs implements Agent {
         this.localServer = localServer;
     }
 
+    @Override
     public void run() {
         try {
             runState(state);
         }
         catch (Exception e) {
-            execptionRecord = new ExceptionRecord(e, this.name, state);
+            execptionRecord = new ExceptionRecordImpl(e, this.name, state);
             finish();
         }
     }
-
-    protected abstract void runState(int state);
 
     protected void move(Node target, int newState) {
         localServer = null;
@@ -86,14 +86,12 @@ public abstract class AgentAbs implements Agent {
         move(getKnownNode("origin"), -1);
     }
 
+    @Override
     public ExceptionRecord getExceptionRecord() {
         return execptionRecord;
     }
 
-    protected Node getKnownNode(String name) {
-        return knownNode.get(name);
-    }
-
+    @Override
     public void addKnownNode(Node node) {
         if (knownNode.containsKey(node.getName()) && !knownNode.get(node.getName()).equals(node)) {
             throw new ConflictingNodesException("Node " + node.getName() + " has conflicting definitions");
@@ -101,6 +99,11 @@ public abstract class AgentAbs implements Agent {
         this.knownNode.put(node.getName(), node);
     }
 
+    protected Node getKnownNode(String name) {
+        return knownNode.get(name);
+    }
+
+    @Override
     public String getName() {
         return this.name;
     }
